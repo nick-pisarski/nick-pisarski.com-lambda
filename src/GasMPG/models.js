@@ -1,4 +1,5 @@
 const moment = require('moment');
+
 class MPG {
     constructor(miles, gallons, total, notes = null) {
         this.miles = miles;
