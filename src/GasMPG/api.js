@@ -1,63 +1,48 @@
-const {
-    Client
-} = require('pg');
-const {
-    MPG
-} = require('./models');
-
-const config = require('../../config.json');
+const MPG = require('./models/mpg');
 
 const DBClient = require('../db/client');
 const queries = require('../utils/pgsql');
 
-const utils = require('../utils/utils');
-
 exports.getListOfMPGS = (event, context, callback) => {
-    const client = new Client(config);
-    client.connect()
-        .then(() => console.log('Connected to PostgreSQL database'))
-        .catch(err => console.error('Connection error', err.stack));
-
-    client.query(queries.select('gasmpg.mpg'))
-        .then(res => callback(null, utils.copyObj(res.rows)))
-        .catch(err => {
-            console.error(err);
-            callback(err, null);
-        })
-        .then(() => client.end())
+    try {
+        const client = new DBClient();
+        client.connect();
+        client.query(queries.select('gasmpg.mpg'))
+            .then((res) => callback(null, res.rows))
+            .catch(err => callback(err, null))
+            .then(() => client.close())
+    } catch (error) {
+        callback(error, null)
+    }
 }
 
 exports.postOneMPG = (event, context, callback) => {
-    const client = new Client(config);
-    client.connect()
-        .then(() => console.log('Connected to PostgreSQL database'))
-        .catch(err => console.error('Connection error', err, err.stack));
+    try {
+        const model = new MPG(event.miles, event.gallons, event.total, event.notes);
+        model.validate();
 
-    const model = new MPG(event.miles, event.gallons, event.total, event.notes);
+        const client = new DBClient();
+        client.connect();
 
-    client.query(queries.insert('gasmpg.mpg', model.columns, model.values))
-        .then(res => callback(null, utils.copyObj(res.rows)))
-        .catch(err => {
-            console.error(err);
-            callback(err, null);
-        })
-        .then(() => client.end())
+        client.query(queries.insert('gasmpg.mpg', model.columns, model.values))
+            .then(res => callback(null, res.rows))
+            .catch(err => callback(err, null))
+            .then(() => client.close())
+
+    } catch (error) {
+        callback(error, null)
+    }
 }
 
 // WIP
 exports.postManyMPGs = (event, context, callback) => {
-    const client = new Client(config);
-    client.connect()
-        .then(() => console.log('Connected to PostgreSQL database'))
-        .catch(err => console.error('Connection error', err, err.stack));
+    const client = new DBClient();
+    client.connect();
 
     const list = event.values.map(val => val.values);
 
     client.query(queries.insertMany('gasmpg.mpg', event.values[0].columns, list))
-        .then(res => callback(null, utils.copyObj(res.rows)))
-        .catch(err => {
-            console.error(err);
-            callback(err, null);
-        })
-        .then(() => client.end())
+        .then(res => callback(null, res.rows))
+        .catch(err => callback(err, null))
+        .then(() => client.close())
 }
