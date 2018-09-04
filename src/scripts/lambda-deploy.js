@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk');
 
 const options = {
-    endpoint: 'https://8x4k8f8o93.execute-api.us-east-1.amazonaws.com/dev',
+    // endpoint: 'https://8x4k8f8o93.execute-api.us-east-1.amazonaws.com/dev',
     region: 'us-east-1'
 }
 
