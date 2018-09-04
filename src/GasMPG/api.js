@@ -32,6 +32,7 @@ exports.postOneMPG = (event, context, callback) => {
         .catch(err => console.error('Connection error', err, err.stack));
 
     const model = new MPG(event.miles, event.gallons, event.total, event.notes);
+
     client.query(queries.insert('gasmpg.mpg', model.columns, model.values))
         .then(res => callback(null, utils.copyObj(res.rows)))
         .catch(err => {
@@ -47,7 +48,9 @@ exports.postManyMPGs = (event, context, callback) => {
     client.connect()
         .then(() => console.log('Connected to PostgreSQL database'))
         .catch(err => console.error('Connection error', err, err.stack));
+
     const list = event.values.map(val => val.values);
+
     client.query(queries.insertMany('gasmpg.mpg', event.values[0].columns, list))
         .then(res => callback(null, utils.copyObj(res.rows)))
         .catch(err => {
