@@ -1,0 +1,19 @@
+{
+  "name": "getmpg",
+  "version": "1.0.0",
+  "description": "GET request for GasMPG DB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "zip -r -FS Lambda-Deployment.zip * -x *.zip *.log test.js"
+  },
+  "keywords": [
+    "postgres"
+  ],
+  "author": "Nick Pisarski",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.22.2",
+    "pg": "^7.4.3"
+  }
+}
