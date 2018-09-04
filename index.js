@@ -1,7 +1,4 @@
 var API = require('./src/GasMPG/api');
-
-module.exports = {
-    getListOfMPGS: API.getListOfMPGS,
-    postOneMPG: API.postOneMPG,
-    postManyMPGs: API.postManyMPGs
-}
+exports.getListOfMPGS   = API.getListOfMPGS;
+exports.postOneMPG      = API.postOneMPG;
+exports.postManyMPGs    = API.postManyMPGs;
