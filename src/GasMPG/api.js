@@ -6,6 +6,8 @@ const {
 } = require('./models');
 
 const config = require('../../config.json');
+
+const DBClient = require('../db/client');
 const queries = require('../utils/pgsql');
 
 const utils = require('../utils/utils');
