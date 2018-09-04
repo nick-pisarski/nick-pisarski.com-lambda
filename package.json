@@ -13,6 +13,7 @@
   "author": "Nick Pisarski",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.307.0",
     "moment": "^2.22.2",
     "pg": "^7.4.3"
   }
